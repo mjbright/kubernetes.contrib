@@ -9,7 +9,7 @@ require "yaml"
 
 #require 'vagrant-aws'
 
-$num_nodes = (ENV['NUM_NODES'] || 2).to_i
+$num_nodes = (ENV['NUM_NODES'] || 3).to_i
 $num_masters = (ENV['NUM_MASTERS'] || 1).to_i
 $ansible_tags = ENV['ANSIBLE_TAGS']
 # OS image to use. Currently supported:
