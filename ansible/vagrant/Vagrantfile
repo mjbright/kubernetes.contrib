@@ -133,6 +133,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.memory = 2048
     vb.cpus = 2
 
+    #max_cpu_pc = (80 / ($num_nodes + 1))
+    max_cpu_pc = (120 / ($num_nodes + 1))
+
+    puts "Setting max %age per VM to " + max_cpu_pc.to_s
+
+    # MJB: limit to 15% cpu per VM  (*4 => 60% !)
+    vb.customize [
+        "modifyvm", :id,
+        "--groups", "/Vagrant-ansible-kubernetes",
+        "--cpuexecutioncap", max_cpu_pc.to_s
+    ]
+
+
     # Use faster paravirtualized networking
     vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
     vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
@@ -196,6 +209,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # and actual connectivity with the host and other VMs is done
       # using eth1 interface.
       ansible.extra_vars = { public_iface: "eth1" }
+      #provider.customize ["modifyvm", :id, "--cpuexecutioncap", "15"]
     end
   end
 
